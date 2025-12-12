@@ -1,0 +1,10 @@
+config:
+  snippets:
+    pipelineStages:
+      - match:
+          selector: '{namespace="student-api"}'
+          stages:
+            - json:
+                expressions:
+                  level: level
+                  msg: message
