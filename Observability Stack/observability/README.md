@@ -33,45 +33,64 @@ All components are deployed using Helm and run inside the `observability` namesp
 
 ## Installation Steps
 
-Create namespace:
-
+### 1. Create Namespace
+```bash
 kubectl create namespace observability
+```
 
-Install Prometheus stack (includes node-exporter and kube-state-metrics):
+### 2. Add Required Helm Repositories
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+```
 
+### 3. Install Prometheus Stack
+(Includes Prometheus, Alertmanager, node-exporter, kube-state-metrics)
+```bash
 helm install prometheus prometheus-community/kube-prometheus-stack \
--n observability \
--f prometheus/values.yaml
+  -n observability \
+  -f prometheus/values.yaml
+```
 
-Install Loki:
-
+### 4. Install Loki
+```bash
 helm install loki grafana/loki \
--n observability \
--f loki/values.yaml
+  -n observability \
+  -f loki/values.yaml
+```
 
-Install Promtail (configured to send only student-api logs):
-
+### 5. Install Promtail
+(Configured to send only student-api logs)
+```bash
 helm install promtail grafana/promtail \
--n observability \
--f promtail/values.yaml
+  -n observability \
+  -f promtail/values.yaml
+```
 
-Install Grafana:
-
+### 6. Install Grafana
+```bash
 helm install grafana grafana/grafana \
--n observability \
--f grafana/values.yaml
+  -n observability \
+  -f grafana/values.yaml
+```
 
-Install Blackbox Exporter (uptime and latency monitoring):
-
+### 7. Install Blackbox Exporter
+(Uptime and latency monitoring)
+```bash
 helm install blackbox prometheus-community/prometheus-blackbox-exporter \
--n observability \
--f blackbox-exporter/values.yaml
+  -n observability \
+  -f blackbox-exporter/values.yaml
+```
 
-Install Postgres Exporter (database metrics):
-
+### 8. Install Postgres Exporter
+(Database metrics)
+```bash
 helm install postgres-exporter prometheus-community/prometheus-postgres-exporter \
--n observability \
--f postgres-exporter/values.yaml
+  -n observability \
+  -f postgres-exporter/values.yaml
+```
+
 
 ## Grafana Access
 
